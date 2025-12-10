@@ -174,12 +174,12 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
                                     const SizedBox(height: 4),
                                     Text(
                                       '${item.quantity}',
-                                      style: TextStyle(color: AppTheme.textSecondary, fontSize: 14, fontWeight: FontWeight.w500),
+                                      style: const TextStyle(color: AppTheme.textSecondary, fontSize: 14, fontWeight: FontWeight.w500),
                                     ),
                                   ],
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 'Edit',
                                 style: TextStyle(color: AppTheme.textSecondary, fontWeight: FontWeight.w600),
                               ),

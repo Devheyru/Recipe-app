@@ -198,8 +198,9 @@ class AuthService {
       'updatedAt': FieldValue.serverTimestamp()
     };
     if (displayName != null) updateData['displayName'] = displayName;
-    if (dietaryPreferences != null)
+    if (dietaryPreferences != null) {
       updateData['dietary_preferences'] = dietaryPreferences;
+    }
     if (avatarUrl != null) updateData['avatarUrl'] = avatarUrl;
     await userDoc.update(updateData);
   }

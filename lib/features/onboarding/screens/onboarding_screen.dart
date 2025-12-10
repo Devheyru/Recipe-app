@@ -173,6 +173,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               child: CachedNetworkImage(
                 imageUrl: image,
                 fit: BoxFit.cover,
+                memCacheWidth: 400,
                 placeholder: (context, url) => Container(
                   color: Colors.grey[100],
                   child: const Center(

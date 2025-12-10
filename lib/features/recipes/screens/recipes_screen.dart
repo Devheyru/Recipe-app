@@ -355,6 +355,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                       ? CachedNetworkImage(
                           imageUrl: recipe.imageUrl,
                           fit: BoxFit.cover,
+                          memCacheHeight: 400,
                           placeholder: (context, url) =>
                               const Center(child: CircularProgressIndicator()),
                           errorWidget: (context, url, error) => const Icon(
@@ -410,7 +411,7 @@ class _RecipesScreenState extends State<RecipesScreen> {
                       ),
                       child: Text(
                         _getEnergyLabel(recipe.energyLevel),
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: AppTheme.secondaryDark,
                             fontSize: 12,
                             fontWeight: FontWeight.bold),

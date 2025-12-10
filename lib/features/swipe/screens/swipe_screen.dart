@@ -233,8 +233,9 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> {
                       swipeOptions: SwipeOptions.only(
                           left: true, right: appNotifier.canSwipeRight()),
                       cardBuilder: (context, index) {
-                        if (index >= filteredRecipes.length)
+                        if (index >= filteredRecipes.length) {
                           return const SizedBox();
+                        }
                         return _buildRecipeCard(filteredRecipes[index]);
                       },
                     ),
@@ -265,7 +266,8 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> {
                   },
                 ),
                 const SizedBox(width: AppTheme.spacingXL),
-                Opacity(
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 200),
                   opacity: appNotifier.canSwipeRight() ? 1.0 : 0.5,
                   child: _buildActionButton(
                     icon: Icons.favorite_rounded,
@@ -429,6 +431,7 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> {
                   CachedNetworkImage(
                     imageUrl: recipe.imageUrl,
                     fit: BoxFit.cover,
+                    memCacheWidth: 800,
                     placeholder: (context, url) => Container(
                       color: Colors.grey.shade200,
                       child: const Center(child: CircularProgressIndicator()),

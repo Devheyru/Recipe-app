@@ -161,10 +161,10 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                           child: RichText(
                             text: TextSpan(
                               style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.textSecondary),
-                              children: [
-                                const TextSpan(text: 'I agree to the '),
+                              children: const [
+                                TextSpan(text: 'I agree to the '),
                                 TextSpan(text: 'Terms of Service', style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.w600)),
-                                const TextSpan(text: ' and '),
+                                TextSpan(text: ' and '),
                                 TextSpan(text: 'Privacy Policy', style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.w600)),
                               ],
                             ),

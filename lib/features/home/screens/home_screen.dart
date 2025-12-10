@@ -119,6 +119,8 @@ class HomeScreen extends ConsumerWidget {
                                   imageUrl:
                                       appState.unlockedRecipes.first.imageUrl,
                                   fit: BoxFit.cover,
+                                  memCacheWidth: 200,
+                                  memCacheHeight: 200,
                                   placeholder: (context, url) => const Center(
                                       child: CircularProgressIndicator()),
                                   errorWidget: (context, url, error) =>
