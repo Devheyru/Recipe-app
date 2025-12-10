@@ -30,12 +30,12 @@ class _ScanScreenState extends State<ScanScreen> {
       body: Column(
         children: [
           const SizedBox(height: AppTheme.spacingM),
-          
+
           // 1. Mode Selector (Fridge vs Pantry)
           _buildModeSelector(),
-          
+
           const SizedBox(height: AppTheme.spacingL),
-          
+
           // 2. Camera Viewfinder
           Expanded(
             child: Container(
@@ -59,18 +59,18 @@ class _ScanScreenState extends State<ScanScreen> {
                         ),
                         const SizedBox(height: AppTheme.spacingM),
                         Text(
-                          _selectedMode == 0 
-                              ? 'Point at your open fridge 🥬' 
+                          _selectedMode == 0
+                              ? 'Point at your open fridge 🥬'
                               : 'Point at your pantry shelves 🥫',
                           style: const TextStyle(color: Colors.white54),
                         ),
                       ],
                     ),
                   ),
-                  
+
                   // Scanning Corners Overlay
                   _buildScannerOverlay(),
-                  
+
                   // Flash Control
                   Positioned(
                     top: AppTheme.spacingM,
@@ -78,7 +78,9 @@ class _ScanScreenState extends State<ScanScreen> {
                     child: IconButton(
                       onPressed: () => setState(() => _isFlashOn = !_isFlashOn),
                       icon: Icon(
-                        _isFlashOn ? Icons.flash_on_rounded : Icons.flash_off_rounded,
+                        _isFlashOn
+                            ? Icons.flash_on_rounded
+                            : Icons.flash_off_rounded,
                         color: Colors.white,
                       ),
                       style: IconButton.styleFrom(
@@ -90,15 +92,16 @@ class _ScanScreenState extends State<ScanScreen> {
               ),
             ),
           ),
-          
+
           const SizedBox(height: AppTheme.spacingL),
-          
+
           // 3. Scan Controls
           Container(
             padding: const EdgeInsets.all(AppTheme.spacingL),
             decoration: const BoxDecoration(
               color: AppTheme.surfaceColor,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(AppTheme.radiusXLarge)),
+              borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(AppTheme.radiusXLarge)),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -106,12 +109,11 @@ class _ScanScreenState extends State<ScanScreen> {
                 Text(
                   'AI Object Detection Active ✨',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: AppTheme.primaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 const SizedBox(height: AppTheme.spacingM),
-                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -121,12 +123,12 @@ class _ScanScreenState extends State<ScanScreen> {
                       onTap: () {},
                       color: AppTheme.textSecondary,
                     ),
-                    
+
                     // Shutter
                     GestureDetector(
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Capturing... 📸')),
+                          const SnackBar(content: Text('Comming soon... 📸')),
                         );
                       },
                       child: Container(
@@ -135,19 +137,22 @@ class _ScanScreenState extends State<ScanScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: AppTheme.primaryColor,
-                          border: Border.all(color: AppTheme.surfaceColor, width: 4),
+                          border: Border.all(
+                              color: AppTheme.surfaceColor, width: 4),
                           boxShadow: [
                             BoxShadow(
-                              color: AppTheme.primaryColor.withOpacity(0.4),
+                              color:
+                                  AppTheme.primaryColor.withValues(alpha: 0.4),
                               blurRadius: 16,
                               offset: const Offset(0, 4),
                             ),
                           ],
                         ),
-                        child: const Icon(Icons.camera_alt_rounded, color: Colors.white, size: 32),
+                        child: const Icon(Icons.camera_alt_rounded,
+                            color: Colors.white, size: 32),
                       ),
                     ),
-                    
+
                     // Manual Entry
                     _buildCircleButton(
                       icon: Icons.edit_note_rounded,
@@ -170,7 +175,7 @@ class _ScanScreenState extends State<ScanScreen> {
       margin: const EdgeInsets.symmetric(horizontal: AppTheme.spacingXL),
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: AppTheme.secondaryLight.withOpacity(0.3),
+        color: AppTheme.secondaryLight.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(50),
       ),
       child: Row(
@@ -193,13 +198,15 @@ class _ScanScreenState extends State<ScanScreen> {
           decoration: BoxDecoration(
             color: isSelected ? AppTheme.surfaceColor : Colors.transparent,
             borderRadius: BorderRadius.circular(50),
-            boxShadow: isSelected ? [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              )
-            ] : null,
+            boxShadow: isSelected
+                ? [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.05),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    )
+                  ]
+                : null,
           ),
           child: Text(
             text,
@@ -248,7 +255,8 @@ class _ScanScreenState extends State<ScanScreen> {
     );
   }
 
-  Widget _buildCorner({double? top, double? bottom, double? left, double? right}) {
+  Widget _buildCorner(
+      {double? top, double? bottom, double? left, double? right}) {
     return Positioned(
       top: top,
       bottom: bottom,
@@ -259,16 +267,32 @@ class _ScanScreenState extends State<ScanScreen> {
         height: 24,
         decoration: BoxDecoration(
           border: Border(
-            top: top != null ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
-            bottom: bottom != null ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
-            left: left != null ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
-            right: right != null ? const BorderSide(color: Colors.white, width: 3) : BorderSide.none,
+            top: top != null
+                ? const BorderSide(color: Colors.white, width: 3)
+                : BorderSide.none,
+            bottom: bottom != null
+                ? const BorderSide(color: Colors.white, width: 3)
+                : BorderSide.none,
+            left: left != null
+                ? const BorderSide(color: Colors.white, width: 3)
+                : BorderSide.none,
+            right: right != null
+                ? const BorderSide(color: Colors.white, width: 3)
+                : BorderSide.none,
           ),
           borderRadius: BorderRadius.only(
-            topLeft: top != null && left != null ? const Radius.circular(8) : Radius.zero,
-            topRight: top != null && right != null ? const Radius.circular(8) : Radius.zero,
-            bottomLeft: bottom != null && left != null ? const Radius.circular(8) : Radius.zero,
-            bottomRight: bottom != null && right != null ? const Radius.circular(8) : Radius.zero,
+            topLeft: top != null && left != null
+                ? const Radius.circular(8)
+                : Radius.zero,
+            topRight: top != null && right != null
+                ? const Radius.circular(8)
+                : Radius.zero,
+            bottomLeft: bottom != null && left != null
+                ? const Radius.circular(8)
+                : Radius.zero,
+            bottomRight: bottom != null && right != null
+                ? const Radius.circular(8)
+                : Radius.zero,
           ),
         ),
       ),

@@ -14,7 +14,15 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
     final appState = ref.watch(appStateProvider);
-    final displayName = authState.user?.displayName ?? 'Erin';
+
+    String displayName;
+    if (authState.user?.isAnonymous == true) {
+      displayName = 'Guest User';
+    } else {
+      final fullName =
+          authState.displayName ?? authState.user?.displayName ?? 'User';
+      displayName = fullName.split(' ').first;
+    }
 
     return Scaffold(
       backgroundColor: const Color(0xFFFFFBF5), // Warm cream background
@@ -26,12 +34,15 @@ class HomeScreen extends ConsumerWidget {
             children: [
               const SizedBox(height: 40),
               // 1. Header
-              Text(
-                'Welcome back,\n$displayName',
-                style: GoogleFonts.dmSerifDisplay(
-                  fontSize: 40,
-                  height: 1.1,
-                  color: const Color(0xFF2D2621),
+              Center(
+                child: Text(
+                  'Welcome back,\n$displayName',
+                  style: GoogleFonts.dmSerifDisplay(
+                    fontSize: 40,
+                    height: 1.1,
+                    color: const Color(0xFF2D2621),
+                  ),
+                  textAlign: TextAlign.center,
                 ),
               ),
               const SizedBox(height: 16),
@@ -92,7 +103,7 @@ class HomeScreen extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 16,
                         offset: const Offset(0, 4),
                       ),
@@ -189,7 +200,7 @@ class HomeScreen extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 16,
                         offset: const Offset(0, 4),
                       ),
@@ -237,14 +248,19 @@ class HomeScreen extends ConsumerWidget {
               Row(
                 children: List.generate(5, (index) {
                   final remaining = appState.carrotCount;
-                  final used = index < (5 - remaining);
+                  // Show remaining carrots from left to right
+                  // e.g. if 4 remaining: indices 0,1,2,3 are active, 4 is used
+                  final isActive = index < remaining;
+
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
-                    child: Text(
-                      '🥕',
-                      style: TextStyle(
-                          fontSize: 26,
-                          color: used ? Colors.grey : Colors.orange.shade700),
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: isActive ? 1.0 : 0.2,
+                      child: const Text(
+                        '🥕',
+                        style: TextStyle(fontSize: 26),
+                      ),
                     ),
                   );
                 }),

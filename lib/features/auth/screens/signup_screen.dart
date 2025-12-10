@@ -35,11 +35,12 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
-    
+
     ref.listen(authProvider, (previous, next) {
       if (next.error != null && previous?.error != next.error) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(next.error!), backgroundColor: AppTheme.errorColor),
+          SnackBar(
+              content: Text(next.error!), backgroundColor: AppTheme.errorColor),
         );
         ref.read(authProvider.notifier).clearError();
       }
@@ -62,24 +63,28 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
               children: [
                 Text(
                   'Create Account 🎉',
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w700),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: AppTheme.spacingS),
                 Text(
                   'Start your journey to smarter pantry management',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: AppTheme.textSecondary),
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyLarge
+                      ?.copyWith(color: AppTheme.textSecondary),
                 ),
                 const SizedBox(height: AppTheme.spacingXL),
-
                 AuthTextField(
                   controller: _nameController,
                   label: 'Full Name',
-                  hint: 'Enter your name',
+                  hint: 'Enter your full name',
                   prefixIcon: Icons.person_outlined,
                   validator: _validateName,
                 ),
                 const SizedBox(height: AppTheme.spacingM),
-
                 AuthTextField(
                   controller: _emailController,
                   label: 'Email',
@@ -89,7 +94,6 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   validator: _validateEmail,
                 ),
                 const SizedBox(height: AppTheme.spacingM),
-
                 AuthTextField(
                   controller: _passwordController,
                   label: 'Password',
@@ -98,15 +102,17 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   obscureText: _obscurePassword,
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      _obscurePassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                       color: AppTheme.textLight,
                     ),
-                    onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
+                    onPressed: () =>
+                        setState(() => _obscurePassword = !_obscurePassword),
                   ),
                   validator: _validatePassword,
                 ),
                 const SizedBox(height: AppTheme.spacingM),
-
                 AuthTextField(
                   controller: _confirmPasswordController,
                   label: 'Confirm Password',
@@ -117,25 +123,31 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   onFieldSubmitted: (_) => _handleSignup(),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscureConfirmPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      _obscureConfirmPassword
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
                       color: AppTheme.textLight,
                     ),
-                    onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                    onPressed: () => setState(() =>
+                        _obscureConfirmPassword = !_obscureConfirmPassword),
                   ),
                   validator: _validateConfirmPassword,
                 ),
                 const SizedBox(height: AppTheme.spacingL),
-
                 Container(
                   padding: const EdgeInsets.all(AppTheme.spacingM),
                   decoration: BoxDecoration(
-                    color: AppTheme.secondaryLight.withOpacity(0.3),
+                    color: AppTheme.secondaryLight.withValues(alpha: 0.3),
                     borderRadius: AppTheme.borderRadiusMedium,
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Password must contain:', style: Theme.of(context).textTheme.labelMedium?.copyWith(color: AppTheme.textSecondary)),
+                      Text('Password must contain:',
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelMedium
+                              ?.copyWith(color: AppTheme.textSecondary)),
                       const SizedBox(height: AppTheme.spacingS),
                       _buildRequirement('At least 6 characters'),
                       _buildRequirement('At least one letter'),
@@ -143,29 +155,43 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   ),
                 ),
                 const SizedBox(height: AppTheme.spacingL),
-
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Checkbox(
                       value: _agreeToTerms,
-                      onChanged: (value) => setState(() => _agreeToTerms = value ?? false),
+                      onChanged: (value) =>
+                          setState(() => _agreeToTerms = value ?? false),
                       activeColor: AppTheme.primaryColor,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4)),
                     ),
                     Expanded(
                       child: GestureDetector(
-                        onTap: () => setState(() => _agreeToTerms = !_agreeToTerms),
+                        onTap: () =>
+                            setState(() => _agreeToTerms = !_agreeToTerms),
                         child: Padding(
-                          padding: const EdgeInsets.only(top: AppTheme.spacingS),
+                          padding:
+                              const EdgeInsets.only(top: AppTheme.spacingS),
                           child: RichText(
                             text: TextSpan(
-                              style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.textSecondary),
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(color: AppTheme.textSecondary),
                               children: const [
                                 TextSpan(text: 'I agree to the '),
-                                TextSpan(text: 'Terms of Service', style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.w600)),
+                                TextSpan(
+                                    text: 'Terms of Service',
+                                    style: TextStyle(
+                                        color: AppTheme.primaryColor,
+                                        fontWeight: FontWeight.w600)),
                                 TextSpan(text: ' and '),
-                                TextSpan(text: 'Privacy Policy', style: TextStyle(color: AppTheme.primaryColor, fontWeight: FontWeight.w600)),
+                                TextSpan(
+                                    text: 'Privacy Policy',
+                                    style: TextStyle(
+                                        color: AppTheme.primaryColor,
+                                        fontWeight: FontWeight.w600)),
                               ],
                             ),
                           ),
@@ -175,23 +201,33 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   ],
                 ),
                 const SizedBox(height: AppTheme.spacingL),
-
                 SizedBox(
                   height: 56,
                   child: ElevatedButton(
-                    onPressed: authState.isLoading || !_agreeToTerms ? null : _handleSignup,
+                    onPressed: authState.isLoading || !_agreeToTerms
+                        ? null
+                        : _handleSignup,
                     child: authState.isLoading
-                        ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.textOnPrimary))
+                        ? const SizedBox(
+                            width: 24,
+                            height: 24,
+                            child: CircularProgressIndicator(
+                                strokeWidth: 2, color: AppTheme.textOnPrimary))
                         : const Text('Create Account'),
                   ),
                 ),
                 const SizedBox(height: AppTheme.spacingL),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Already have an account? ', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondary)),
-                    TextButton(onPressed: () => context.go(AppRoutes.login), child: const Text('Sign In')),
+                    Text('Already have an account? ',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: AppTheme.textSecondary)),
+                    TextButton(
+                        onPressed: () => context.go(AppRoutes.login),
+                        child: const Text('Sign In')),
                   ],
                 ),
               ],
@@ -207,9 +243,14 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       padding: const EdgeInsets.only(bottom: AppTheme.spacingXS),
       child: Row(
         children: [
-          const Icon(Icons.check_circle_outline, size: 16, color: AppTheme.secondaryDark),
+          const Icon(Icons.check_circle_outline,
+              size: 16, color: AppTheme.secondaryDark),
           const SizedBox(width: AppTheme.spacingS),
-          Text(text, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppTheme.textSecondary)),
+          Text(text,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(color: AppTheme.textSecondary)),
         ],
       ),
     );
@@ -231,7 +272,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
   String? _validatePassword(String? value) {
     if (value == null || value.isEmpty) return 'Please enter a password';
     if (value.length < 6) return 'Password must be at least 6 characters';
-    if (!RegExp(r'[a-zA-Z]').hasMatch(value)) return 'Password must contain at least one letter';
+    if (!RegExp(r'[a-zA-Z]').hasMatch(value))
+      return 'Password must contain at least one letter';
     return null;
   }
 
@@ -245,21 +287,24 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     if (!_formKey.currentState!.validate()) return;
     if (!_agreeToTerms) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please agree to the Terms of Service'), backgroundColor: AppTheme.errorColor),
+        const SnackBar(
+            content: Text('Please agree to the Terms of Service'),
+            backgroundColor: AppTheme.errorColor),
       );
       return;
     }
     final success = await ref.read(authProvider.notifier).signUp(
-      email: _emailController.text.trim(),
-      password: _passwordController.text,
-      displayName: _nameController.text.trim(),
-    );
+          email: _emailController.text.trim(),
+          password: _passwordController.text,
+          displayName: _nameController.text.trim(),
+        );
     if (success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created successfully! 🎉'), backgroundColor: AppTheme.successColor),
+        const SnackBar(
+            content: Text('Account created successfully! 🎉'),
+            backgroundColor: AppTheme.successColor),
       );
       context.go(AppRoutes.home);
     }
   }
 }
-

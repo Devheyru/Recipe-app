@@ -37,13 +37,12 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final appRouterProvider = Provider<GoRouter>((ref) {
   // Do not watch here to avoid rebuilding the router on auth changes
   // The _RouterRefreshStream handles triggering redirects
-  
+
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
     initialLocation: AppRoutes.onboarding,
     debugLogDiagnostics: true,
     refreshListenable: _RouterRefreshStream(ref),
-    
     redirect: (BuildContext context, GoRouterState state) {
       // Read current state during redirect
       final authState = ref.read(authProvider);
@@ -53,8 +52,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       // GoRouter 14.x: use matchedLocation for current path
       final currentPath = state.matchedLocation;
       final isPublicRoute = _publicRoutes.contains(currentPath);
-      
-      debugPrint('Router Redirect: path=$currentPath, isSignedIn=$isSignedIn, hasSeen=$hasSeenWelcome');
+
+      // debugPrint(
+      //     'Router Redirect: path=$currentPath, isSignedIn=$isSignedIn, hasSeen=$hasSeenWelcome');
 
       // User NOT signed in
       if (!isSignedIn) {
@@ -66,15 +66,21 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         }
         return null;
       }
-      
+
       // User IS signed in
       if (isSignedIn && isPublicRoute) {
+        // Allow anonymous users to access login/signup pages
+        if (authState.user?.isAnonymous == true) {
+          if (currentPath == AppRoutes.login ||
+              currentPath == AppRoutes.signup) {
+            return null;
+          }
+        }
         return AppRoutes.home;
       }
-      
+
       return null;
     },
-    
     routes: [
       // Public routes
       GoRoute(
@@ -92,7 +98,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         name: 'signup',
         builder: (context, state) => const SignupScreen(),
       ),
-      
+
       GoRoute(
         path: AppRoutes.swipe,
         name: 'swipe',
@@ -107,32 +113,36 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: AppRoutes.home,
             name: 'home',
-            pageBuilder: (context, state) => const NoTransitionPage(child: HomeScreen()),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: HomeScreen()),
           ),
           GoRoute(
             path: AppRoutes.pantry,
             name: 'pantry',
-            pageBuilder: (context, state) => const NoTransitionPage(child: PantryScreen()),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: PantryScreen()),
           ),
           GoRoute(
             path: AppRoutes.scan,
             name: 'scan',
-            pageBuilder: (context, state) => const NoTransitionPage(child: ScanScreen()),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: ScanScreen()),
           ),
           GoRoute(
             path: AppRoutes.recipes,
             name: 'recipes',
-            pageBuilder: (context, state) => const NoTransitionPage(child: RecipesScreen()),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: RecipesScreen()),
           ),
           GoRoute(
             path: AppRoutes.profile,
             name: 'profile',
-            pageBuilder: (context, state) => const NoTransitionPage(child: ProfileScreen()),
+            pageBuilder: (context, state) =>
+                const NoTransitionPage(child: ProfileScreen()),
           ),
         ],
       ),
     ],
-    
     errorBuilder: (context, state) => Scaffold(
       body: Center(
         child: Column(
@@ -140,7 +150,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           children: [
             const Icon(Icons.error_outline, size: 64, color: Colors.red),
             const SizedBox(height: 16),
-            Text('Page not found', style: Theme.of(context).textTheme.headlineSmall),
+            Text('Page not found',
+                style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 24),
             ElevatedButton(
               onPressed: () => context.go(AppRoutes.home),

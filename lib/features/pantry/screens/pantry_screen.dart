@@ -20,7 +20,8 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
     final appState = ref.watch(appStateProvider);
     final appNotifier = ref.read(appStateProvider.notifier);
     final filtered = appState.pantryItems
-        .where((item) => item.name.toLowerCase().contains(_searchQuery.toLowerCase()))
+        .where((item) =>
+            item.name.toLowerCase().contains(_searchQuery.toLowerCase()))
         .toList();
 
     return Scaffold(
@@ -31,7 +32,7 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
           _showAddEditDialog();
         },
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Add / Delete Ingredients'),
+        label: const Text('Add Ingredients'),
         elevation: 4,
         backgroundColor: AppTheme.primaryColor,
       ),
@@ -41,15 +42,21 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
           slivers: [
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(AppTheme.spacingL, AppTheme.spacingXL, AppTheme.spacingL, AppTheme.spacingM),
+                padding: const EdgeInsets.fromLTRB(AppTheme.spacingL,
+                    AppTheme.spacingXL, AppTheme.spacingL, AppTheme.spacingM),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'My Pantry',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        fontSize: 28,
+                    Center(
+                      child: Text(
+                        'My Pantry',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headlineMedium
+                            ?.copyWith(
+                              fontWeight: FontWeight.w800,
+                              fontSize: 32,
+                            ),
                       ),
                     ),
                     const SizedBox(height: AppTheme.spacingL),
@@ -57,67 +64,62 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
                       children: [
                         Expanded(
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingM, vertical: AppTheme.spacingS),
+                            height: 48,
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: Colors.grey.shade300),
+                              color: AppTheme.surfaceColor,
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.03),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
-                            child: const Text(
-                              'Add / Delete Ingredients',
-                              style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.textPrimary),
+                            child: TextField(
+                              onChanged: (value) =>
+                                  setState(() => _searchQuery = value),
+                              decoration: InputDecoration(
+                                hintText: 'Search ingredients...',
+                                filled: false,
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                contentPadding: const EdgeInsets.only(
+                                  left: 26,
+                                  right: 20,
+                                ),
+                                hintStyle:
+                                    TextStyle(color: Colors.grey.shade400),
+                              ),
                             ),
                           ),
                         ),
                         const SizedBox(width: AppTheme.spacingM),
                         Container(
-                          height: 44,
-                          width: 44,
+                          height: 48,
+                          width: 48,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(30),
                             border: Border.all(color: Colors.grey.shade300),
                           ),
                           child: IconButton(
-                            icon: const Icon(Icons.search_rounded, color: AppTheme.textPrimary),
+                            icon: const Icon(Icons.search_rounded,
+                                color: AppTheme.textPrimary),
                             onPressed: () {},
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: AppTheme.spacingM),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppTheme.surfaceColor,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.03),
-                            blurRadius: 10,
-                            offset: const Offset(0, 4),
-                          ),
-                        ],
-                      ),
-                      child: TextField(
-                        onChanged: (value) => setState(() => _searchQuery = value),
-                        decoration: InputDecoration(
-                          hintText: 'Search ingredients...',
-                          prefixIcon: const Icon(Icons.search_rounded, color: AppTheme.textLight),
-                          border: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          contentPadding: const EdgeInsets.all(16),
-                          hintStyle: TextStyle(color: Colors.grey.shade400),
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
             ),
-
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingL),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: AppTheme.spacingL),
               sliver: SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
@@ -132,24 +134,29 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
                       background: Container(
                         alignment: Alignment.centerRight,
                         padding: const EdgeInsets.symmetric(horizontal: 20),
-                        color: AppTheme.errorColor.withOpacity(0.1),
-                        child: const Icon(Icons.delete_forever, color: AppTheme.errorColor),
+                        color: AppTheme.errorColor.withValues(alpha: 0.1),
+                        child: const Icon(Icons.delete_forever,
+                            color: AppTheme.errorColor),
                       ),
                       onDismissed: (_) => appNotifier.deletePantryItem(item.id),
                       child: InkWell(
                         onTap: () {
                           if (_requireAuth()) return;
-                          _showAddEditDialog(itemId: item.id, initialName: item.name, initialQuantity: item.quantity);
+                          _showAddEditDialog(
+                              itemId: item.id,
+                              initialName: item.name,
+                              initialQuantity: item.quantity);
                         },
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 12),
-                          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 14),
                           decoration: BoxDecoration(
                             color: AppTheme.surfaceColor,
                             borderRadius: BorderRadius.circular(16),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black.withOpacity(0.02),
+                                color: Colors.black.withValues(alpha: 0.02),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -174,17 +181,53 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
                                     const SizedBox(height: 4),
                                     Text(
                                       '${item.quantity}',
-                                      style: const TextStyle(color: AppTheme.textSecondary, fontSize: 14, fontWeight: FontWeight.w500),
+                                      style: const TextStyle(
+                                          color: AppTheme.textSecondary,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ],
                                 ),
                               ),
-                              const Text(
-                                'Edit',
-                                style: TextStyle(color: AppTheme.textSecondary, fontWeight: FontWeight.w600),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  const Row(
+                                    children: [
+                                      Text(
+                                        'Edit',
+                                        style: TextStyle(
+                                            color: AppTheme.textSecondary,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      SizedBox(width: 6),
+                                      Icon(Icons.chevron_right,
+                                          color: AppTheme.textLight),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        'Swipe to delete',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          color: AppTheme.textSecondary
+                                              .withValues(alpha: 0.4),
+                                          fontStyle: FontStyle.italic,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 2),
+                                      Icon(
+                                        Icons.swipe_left_sharp,
+                                        size: 12,
+                                        color: AppTheme.textSecondary
+                                            .withValues(alpha: 0.4),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                              const SizedBox(width: 6),
-                              const Icon(Icons.chevron_right, color: AppTheme.textLight),
                             ],
                           ),
                         ),
@@ -195,7 +238,6 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
                 ),
               ),
             ),
-            
             const SliverToBoxAdapter(child: SizedBox(height: 120)),
           ],
         ),
@@ -203,10 +245,14 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
     );
   }
 
-  Future<void> _showAddEditDialog({String? itemId, String initialName = '', int initialQuantity = 1}) async {
+  Future<void> _showAddEditDialog(
+      {String? itemId,
+      String initialName = '',
+      int initialQuantity = 1}) async {
     final appNotifier = ref.read(appStateProvider.notifier);
     final nameController = TextEditingController(text: initialName);
-    final qtyController = TextEditingController(text: initialQuantity.toString());
+    final qtyController =
+        TextEditingController(text: initialQuantity.toString());
 
     await showDialog(
       context: context,
@@ -219,6 +265,7 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
               controller: nameController,
               decoration: const InputDecoration(labelText: 'Name'),
             ),
+            const SizedBox(height: AppTheme.spacingXL),
             TextField(
               controller: qtyController,
               decoration: const InputDecoration(labelText: 'Quantity'),
@@ -227,7 +274,9 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+          TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel')),
           ElevatedButton(
             onPressed: () {
               final name = nameController.text.trim();
@@ -257,7 +306,9 @@ class _PantryScreenState extends ConsumerState<PantryScreen> {
           title: const Text('Login Required'),
           content: const Text('Saving pantry changes requires login.'),
           actions: [
-            TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
+            TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text('Cancel')),
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop();

@@ -117,7 +117,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
 
                 SizedBox(
                   height: 52,
@@ -157,6 +157,56 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: const Text('Sign Up',
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w700)),
+                  ),
+                ),
+                const SizedBox(height: AppTheme.spacingM),
+
+                // Divider
+                Row(
+                  children: [
+                    Expanded(child: Divider(color: Colors.grey.shade300)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text('OR',
+                          style: TextStyle(
+                              color: Colors.grey.shade500, fontSize: 12)),
+                    ),
+                    Expanded(child: Divider(color: Colors.grey.shade300)),
+                  ],
+                ),
+                const SizedBox(height: AppTheme.spacingM),
+
+                // Google Button
+                SizedBox(
+                  height: 52,
+                  child: OutlinedButton(
+                    onPressed: authState.isLoading ? null : _handleGoogleLogin,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppTheme.textPrimary,
+                      side: BorderSide(color: Colors.grey.shade400),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(26)),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Since we don't have a Google asset, we'll use a colored G text or icon
+                        // Using a simple text representation for now
+                        Text(
+                          'G',
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontWeight: FontWeight.w900,
+                            fontSize: 24,
+                            color: Colors.blue.shade700,
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        const Text('Continue with Google',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w700)),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(height: AppTheme.spacingM),
@@ -214,6 +264,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     if (value == null || value.isEmpty) return 'Please enter your password';
     if (value.length < 6) return 'Password must be at least 6 characters';
     return null;
+  }
+
+  Future<void> _handleGoogleLogin() async {
+    final success = await ref.read(authProvider.notifier).signInWithGoogle();
+    if (success && mounted) {
+      ref.read(appStateProvider.notifier).setGuestMode(false);
+      context.go(AppRoutes.home);
+    }
   }
 
   Future<void> _handleLogin() async {

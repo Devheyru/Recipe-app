@@ -181,17 +181,26 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> {
                 right: AppTheme.spacingL,
                 top: AppTheme.spacingS,
                 bottom: AppTheme.spacingS),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  '${appState.carrotCount} of 5 unlocks left',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontWeight: FontWeight.w700, color: AppTheme.textPrimary),
-                ),
-                const SizedBox(width: 8),
-                const Text('🥕', style: TextStyle(fontSize: 18)),
-              ],
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: AppTheme.surfaceColor,
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: Colors.grey.shade200),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    '${appState.carrotCount}/5',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                        color: AppTheme.textPrimary),
+                  ),
+                  const SizedBox(width: 4),
+                  const Text('🥕', style: TextStyle(fontSize: 16)),
+                ],
+              ),
             ),
           ),
         ],
@@ -362,12 +371,18 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> {
               contentPadding:
                   const EdgeInsets.symmetric(horizontal: AppTheme.spacingM),
               title: const Text('Filters'),
-              trailing: TextButton(
+              trailing: IconButton(
                 onPressed: () =>
                     appNotifier.setFilterExpanded(!appState.filterExpanded),
-                child: Text(appState.filterExpanded
+                icon: Icon(
+                  Icons.filter_list_rounded,
+                  color: appState.filterExpanded
+                      ? AppTheme.primaryColor
+                      : Colors.grey.shade400,
+                ),
+                tooltip: appState.filterExpanded
                     ? 'Collapse Filters'
-                    : 'Expand Filters'),
+                    : 'Expand Filters',
               ),
             ),
             if (appState.filterExpanded)
@@ -461,7 +476,7 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withOpacity(0.8)
+                          Colors.black.withValues(alpha: 0.8)
                         ],
                         stops: const [0.6, 1.0],
                       ),
@@ -506,7 +521,7 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> {
                   Text(
                     recipe.description,
                     style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: Colors.white.withValues(alpha: 0.9),
                       fontSize: 14,
                     ),
                     maxLines: 2,
@@ -551,7 +566,8 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> {
                       label: const Text('Show Directions',
                           style: TextStyle(color: Colors.white)),
                       style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: Colors.white.withOpacity(0.6)),
+                        side: BorderSide(
+                            color: Colors.white.withValues(alpha: 0.6)),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
                       ),
@@ -570,7 +586,7 @@ class _SwipeScreenState extends ConsumerState<SwipeScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.5),
+        color: Colors.black.withValues(alpha: 0.5),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -743,7 +759,7 @@ class _FilterChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Chip(
       label: Text(label),
-      backgroundColor: AppTheme.primaryLight.withOpacity(0.15),
+      backgroundColor: AppTheme.primaryLight.withValues(alpha: 0.15),
       labelStyle: const TextStyle(
           color: AppTheme.primaryDark, fontWeight: FontWeight.w600),
     );

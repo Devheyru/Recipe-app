@@ -35,6 +35,7 @@ class AuthService {
         _googleSignIn = googleSignIn ?? GoogleSignIn();
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+  Stream<User?> get userChanges => _firebaseAuth.userChanges();
   User? get currentUser => _firebaseAuth.currentUser;
   bool get isSignedIn => currentUser != null;
 
@@ -72,12 +73,17 @@ class AuthService {
       );
       if (credential.user != null) {
         await credential.user!.updateDisplayName(displayName.trim());
+
+        // Reload user to ensure displayName is updated in the local object
+        await credential.user!.reload();
+        final updatedUser = _firebaseAuth.currentUser;
+
         await _createUserProfile(
-          uid: credential.user!.uid,
+          uid: updatedUser!.uid,
           email: email.trim(),
           displayName: displayName.trim(),
         );
-        return AuthResult.success(credential.user!);
+        return AuthResult.success(updatedUser!);
       }
       return AuthResult.failure('Account creation failed. Please try again.');
     } on FirebaseAuthException catch (e) {

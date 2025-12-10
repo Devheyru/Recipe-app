@@ -49,6 +49,16 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                 fontWeight: FontWeight.w400,
               ),
             ),
+            const SizedBox(height: 12),
+            Text(
+              'Match with your next meal',
+              style: TextStyle(
+                fontSize: 18,
+                color: const Color(0xFF2D2621).withValues(alpha: 0.7),
+                fontWeight: FontWeight.w500,
+                letterSpacing: 0.5,
+              ),
+            ),
 
             const Spacer(),
 
@@ -82,6 +92,21 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                     isLike: false,
                   ),
                 ],
+              ),
+            ),
+
+            const SizedBox(height: 40),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Text(
+                'Swipe right on recipes you love based on ingredients you already have.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  height: 1.5,
+                  color: const Color(0xFF2D2621).withValues(alpha: 0.8),
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
 
@@ -147,7 +172,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 24,
             offset: const Offset(0, 12),
           ),
@@ -164,7 +189,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
               shape: BoxShape.circle,
               border: Border.all(
                 color: isCenter
-                    ? const Color(0xFFEBB238).withOpacity(0.2)
+                    ? const Color(0xFFEBB238).withValues(alpha: 0.2)
                     : Colors.transparent,
                 width: 4,
               ),
@@ -181,7 +206,7 @@ class _OnboardingScreenState extends ConsumerState<OnboardingScreen> {
                   ),
                 ),
                 errorWidget: (context, url, error) {
-                  debugPrint('Image failed to load: $error');
+                  // debugPrint('Image failed to load: $error');
                   return Container(
                     color: Colors.grey[200],
                     child: const Icon(Icons.broken_image, color: Colors.grey),

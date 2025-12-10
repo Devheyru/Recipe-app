@@ -10,16 +10,22 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authProvider);
     final user = authState.user;
+    final isAnonymous = user?.isAnonymous == true;
+    final displayName = isAnonymous
+        ? 'Guest User'
+        : (authState.displayName ?? user?.displayName ?? 'User');
 
     return Scaffold(
       backgroundColor: AppTheme.backgroundColor,
       appBar: AppBar(
         backgroundColor: AppTheme.backgroundColor,
         elevation: 0,
-        title: const Text('Profile', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text('Profile',
+            style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         actions: [
-          IconButton(icon: const Icon(Icons.settings_outlined), onPressed: () {}),
+          IconButton(
+              icon: const Icon(Icons.settings_outlined), onPressed: () {}),
         ],
       ),
       body: SingleChildScrollView(
@@ -43,11 +49,12 @@ class ProfileScreen extends ConsumerWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: AppTheme.primaryLight,
-                      border: Border.all(color: AppTheme.primaryColor, width: 2),
+                      border:
+                          Border.all(color: AppTheme.primaryColor, width: 2),
                     ),
                     child: Center(
                       child: Text(
-                        _getInitials(user?.displayName ?? 'User'),
+                        _getInitials(displayName),
                         style: const TextStyle(
                           color: AppTheme.primaryDark,
                           fontSize: 24,
@@ -62,13 +69,15 @@ class ProfileScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          user?.displayName ?? 'Guest',
-                          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          displayName,
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         const SizedBox(height: 4),
                         Text(
                           user?.email ?? '',
-                          style: TextStyle(color: Colors.grey.shade500, fontSize: 14),
+                          style: TextStyle(
+                              color: Colors.grey.shade500, fontSize: 14),
                         ),
                       ],
                     ),
@@ -108,7 +117,9 @@ class ProfileScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Dietary Preferences', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  const Text('Dietary Preferences',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   const SizedBox(height: 16),
                   Wrap(
                     spacing: 8,
@@ -145,7 +156,7 @@ class ProfileScreen extends ConsumerWidget {
               ),
             ),
 
-            const SizedBox(height: AppTheme.spacingL),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.13),
 
             // 5. Sign Out
             TextButton(
@@ -154,19 +165,23 @@ class ProfileScreen extends ConsumerWidget {
               },
               style: TextButton.styleFrom(
                 foregroundColor: AppTheme.errorColor,
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                backgroundColor: AppTheme.surfaceColor,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.logout_rounded, size: 20),
                   SizedBox(width: 8),
-                  Text('Sign Out', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('Sign Out',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 100),
           ],
         ),
@@ -183,9 +198,17 @@ class ProfileScreen extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: color.shade700)),
+          Text(value,
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w800,
+                  color: color.shade700)),
           const SizedBox(height: 4),
-          Text(label, style: TextStyle(fontSize: 12, color: color.shade700, fontWeight: FontWeight.w600)),
+          Text(label,
+              style: TextStyle(
+                  fontSize: 12,
+                  color: color.shade700,
+                  fontWeight: FontWeight.w600)),
         ],
       ),
     );
@@ -224,7 +247,9 @@ class ProfileScreen extends ConsumerWidget {
     return ListTile(
       leading: Container(
         padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(color: Colors.grey.shade50, borderRadius: BorderRadius.circular(10)),
+        decoration: BoxDecoration(
+            color: Colors.grey.shade50,
+            borderRadius: BorderRadius.circular(10)),
         child: Icon(icon, color: Colors.black87, size: 20),
       ),
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
@@ -234,7 +259,8 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   Widget _buildDivider() {
-    return const Divider(height: 1, indent: 70, endIndent: 20, color: Color(0xFFF5F5F5));
+    return const Divider(
+        height: 1, indent: 70, endIndent: 20, color: Color(0xFFF5F5F5));
   }
 
   String _getInitials(String name) {
