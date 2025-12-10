@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -49,21 +50,20 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAqqdN-g79T5mPKCdwYnFtYRcDgml9IIpY',
-    appId: '1:1028993483590:android:57b8d7719e56072d49db47',
-    messagingSenderId: '1028993483590',
-    projectId: 'pantrypal-erin-2024',
-    storageBucket: 'pantrypal-erin-2024.firebasestorage.app',
+  static FirebaseOptions android = FirebaseOptions(
+    apiKey: dotenv.env['ANDROID_API_KEY']!,
+    appId: dotenv.env['ANDROID_APP_ID']!,
+    messagingSenderId: dotenv.env['ANDROID_MESSAGING_SENDER_ID']!,
+    projectId: dotenv.env['ANDROID_PROJECT_ID']!,
+    storageBucket: dotenv.env['ANDROID_STORAGE_BUCKET']!,
   );
 
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDiyUu5YVkvAv3Mk69vDl4HEGFkG_F2T4A',
-    appId: '1:1028993483590:ios:70b30c0981e8f69849db47',
-    messagingSenderId: '1028993483590',
-    projectId: 'pantrypal-erin-2024',
-    storageBucket: 'pantrypal-erin-2024.firebasestorage.app',
-    iosBundleId: 'com.pantrypal.pantryPal',
+  static FirebaseOptions ios = FirebaseOptions(
+    apiKey: dotenv.env['IOS_API_KEY']!,
+    appId: dotenv.env['IOS_APP_ID']!,
+    messagingSenderId: dotenv.env['IOS_MESSAGING_SENDER_ID']!,
+    projectId: dotenv.env['IOS_PROJECT_ID']!,
+    storageBucket: dotenv.env['IOS_STORAGE_BUCKET']!,
+    iosBundleId: dotenv.env['IOS_BUNDLE_ID']!,
   );
-
 }
