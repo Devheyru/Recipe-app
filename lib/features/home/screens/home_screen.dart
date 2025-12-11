@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pantry_pal/core/providers/app_state_provider.dart';
 import 'package:pantry_pal/core/router/app_router.dart';
+import 'package:pantry_pal/core/theme/app_theme.dart';
 import 'package:pantry_pal/features/auth/providers/auth_provider.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -64,8 +65,8 @@ class HomeScreen extends ConsumerWidget {
                 child: ElevatedButton(
                   onPressed: () => context.push(AppRoutes.swipe),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFEBB238), // Golden yellow
-                    foregroundColor: Colors.white,
+                    backgroundColor: AppTheme.primaryColor, // Golden yellow
+                    foregroundColor: const Color.fromARGB(255, 255, 255, 255),
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
